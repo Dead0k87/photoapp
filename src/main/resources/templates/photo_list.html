@@ -1,0 +1,53 @@
+
+
+<html xmlns:th="http://www.thymeleaf.org">
+<body xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:insert="fragments/header::header"></div>
+<div th:insert="fragments/navbar::navbar"></div>
+
+<div class="container">
+    <a class="btn btn-success" href="/photos/add">Add new photo</a>
+</div>
+<br>
+<div class="container">
+    <form method="POST" action="/photos/filterByGalleryName" class="form-inline">
+        <div class="form-group">
+        </div>
+        <!--<div class="form-group">-->
+        <!--<input type="text" name="filterByGalleryName" class="form-control"/>-->
+        <!--<label class="sr-only">filter by gallery name</label>-->
+        <!--<button type="submit" class="btn btn-info">Filter by gallery name</button>-->
+        <!--</div>-->
+
+        <form role="search">
+            <div class="form-group">
+                <input name="filterByGalleryName" type="text" class="form-control" placeholder="Filter by gallery name">
+            </div>
+            <button type="submit" class="btn btn-info">Filter</button>
+        </form>
+    </form>
+</div>
+<div class="container">
+    <div class="container">
+        <h1 th:text="${userNameLong}" class="font-weight-light text-center text-lg-left mt-4 mb-0">Photos</h1>
+        <hr class="mt-2 mb-5">
+        </h1>
+        <div class="row text-center text-lg-left">
+            <div th:each="photo : ${photo_list}" class="col-lg-3 col-md-4 col-6">
+                <!--<a href="#" class="d-block mb-4 h-100"> </a>-->
+                <td th:text="'Gallery: ' + ${photo.galleryName}"></td>
+                <td th:text="'| User: ' + ${photo.userID}" class="container" sec:authorize="hasRole('ROLE_ADMIN')"></td>
+                <!--<a href="#" class="d-block mb-4 h-100">-->
+                    <img class="img-fluid img-thumbnail"
+                         src="" th:src="@{'data:image/jpeg;base64,'+${photo.generateBase64Image()}}" alt="">
+                </a>
+                <td><a itemType=" button" class="btn btn-warning" th:href="@{/photos/delete(id=${photo.id})}">Delete</a>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+</div>
+<div th:insert="fragments/footer::footer"></div>
+</body>
+</html>
